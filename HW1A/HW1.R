@@ -37,3 +37,9 @@ x <- tapply(rep(1, nrow(surveyData)), surveyData$MostImportantSource, sum)
 
 barplot(sort(x), las = 2)
 
+# question 6
+lR <- glm(formula = UseSocialMedia ~ Party + Educ + Race + Voted_Trump + Educ_Years + Age + Male + Income, data = surveyData, family = "binomial")
+summary(lR)
+
+# question 7 
+surveyDataOnlySeenArticle <- surveyData[Heard == "Yes"]
