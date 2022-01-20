@@ -1,5 +1,7 @@
 library(readstata13)
 library(scales)
+library(mltools)
+library(data.table)
 
 surveyData <- read.dta13("/Users/kabirkapur/Desktop/SCHOOL/ECON124/HW1/survey1.dta")
 fakeNewsData <- read.dta13("/Users/kabirkapur/Desktop/SCHOOL/ECON124/HW1/fakenews1.dta")
@@ -24,5 +26,13 @@ x <- tapply(rep(1, nrow(surveyDataOnlySeenArticle)), surveyDataOnlySeenArticle$B
 y <- tapply(rep(1, nrow(surveyDataOnlySeenArticle)), surveyDataOnlySeenArticle$ThoughtTrue, sum)
 
 
+par(mfrow=c(1,2))
 barplot(sort(x), las = 2)
 barplot(sort(y), las = 2)
+
+# question 8
+surveyTruthFakeOrPlacebo <- surveyData[(surveyData$BarLabel == "Fake" | surveyData$BarLabel == "Placebo"),]
+
+surveyTruthFakeOrPlacebo$race <- as.factor(surveyTruthFakeOrPlacebo$race)
+surveyTruthFakeOrPlacebo <- one_hot(as.data.table(surveyTruthFakeOrPlacebo))
+
