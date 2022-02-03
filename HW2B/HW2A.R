@@ -68,31 +68,12 @@ r_squared_is <- function(df){
 r_squared_is(testSet)
 
 # question 8
-# for (col in 1:ncol(trainingSet)){
-#   trainingSet[ , col] <- factor(trainingSet[ , col], NA)
-# }
-
-naref(testSet)
-naref(trainingSet)
+for (col in colnames(trainingSet)){
+  if (col != "Player"){  
+    trainingSet$col <- factor(trainingSet$col, NA)
+  }
+}
 
 X <- model.matrix(Salary ~  . - Player, data=trainingSet)[,-1]
-
-# question 9
-lasso_model <- gamlr(X, log(trainingSet$Salary))
+lasso_model <- gamlr(X, trainingSet$Salary)
 plot(lasso_model)
-
-# question 10
-set.seed(0)
-
-cv.lasso_model <- cv.gamlr(X, log(trainingSet$Salary), verb=TRUE)
-plot(cv.lasso_model)
-# R^2 = 1 - (((Y - Yhat)^2)/(Y - Ybar)^2)
-# Ybar is means of actuals, Yhat is prediction
-
-# adjusted R^2 penalizes you for adding more data to your model
-# any time you add more variables to your regression, your R^2 will always go up
-# we want to minimize deviation
-# cv.gamlr something about cross validation with respect to gamlr idk bruh
-
-# naref()
-# 
