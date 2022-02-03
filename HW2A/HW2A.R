@@ -78,14 +78,18 @@ naref(trainingSet)
 X <- model.matrix(Salary ~  . - Player, data=trainingSet)[,-1]
 
 # question 9
-lasso_model <- gamlr(X, log(trainingSet$Salary))
+lasso_model <- gamlr(X, (trainingSet))
 plot(lasso_model)
 
 # question 10
 set.seed(0)
 
-cv.lasso_model <- cv.gamlr(X, log(trainingSet$Salary), verb=TRUE)
+cv.lasso_model <- cv.gamlr(X, log(testSet), verb=TRUE, nfold = 10, df = TRUE)
 plot(cv.lasso_model)
+summary(cv.lasso_model)
+
+coef(lasso_model)[-1,] 
+
 # R^2 = 1 - (((Y - Yhat)^2)/(Y - Ybar)^2)
 # Ybar is means of actuals, Yhat is prediction
 
