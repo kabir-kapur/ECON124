@@ -1,6 +1,7 @@
 library(scales)
 library(caTools)
 library(gamlr)
+library(dpylr)
 # question 1
 nba <- read.csv("/Users/kabirkapur/Desktop/SCHOOL/ECON124/HW2A/NBA.csv")
 
@@ -90,6 +91,26 @@ summary(cv.lasso_model)
 
 coef(lasso_model)[-1,]
 
+# question 11
+coefs <- coef(cv.lasso_model, select = "min")[-1,]
+coefs[which(coefs!=0)]
+# question 12
+b <- coef(lasso_model)[-1,]
+b[which(b!=0)]
+
+# question 13
+
+# question 14
+Xnew <- model.matrix(~ . * Tm - Player, data = trainingSet)[,-1]
+lasso2 <-gamlr(X, log(trainingSet$Salary), verb = TRUE)
+coefs2 <- coef(lasso2)
+coefs2[which(coefs2!=0)]
+# question 15
+lebron <- nba[192,]
+lebron <- lebron[4:28]
+lebron
+prediction <- predict(lasso2)
+exp(lasso2[which(prediction$Player=="LeBron James")])
 # R^2 = 1 - (((Y - Yhat)^2)/(Y - Ybar)^2)
 # Ybar is means of actuals, Yhat is prediction
 
